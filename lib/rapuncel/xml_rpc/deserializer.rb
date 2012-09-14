@@ -8,7 +8,10 @@ module Rapuncel
       end
     
       def deserialize xml_node = root_node
-        send "deserialize_#{xml_node.name}", xml_node
+        return unless xml_node
+        if self.respond_to?("deserialize_#{xml_node.name}")
+          send "deserialize_#{xml_node.name}", xml_node
+        end
       end
     
       def deserialize_base64 xml_node
@@ -86,7 +89,7 @@ module Rapuncel
       def to_ruby
         deserialize
       end
-    
+      
       protected
       def root_node
         @xml_doc.root

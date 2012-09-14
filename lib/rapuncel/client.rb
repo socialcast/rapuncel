@@ -1,4 +1,8 @@
-require 'rapuncel/adapters/curb_adapter'
+begin
+  require 'rapuncel/adapters/curb_adapter'
+rescue LoadError
+  require 'rapuncel/adapters/net_http_adapter'
+end
 require 'rapuncel/connection'
 require 'rapuncel/xml_rpc/serializer'
 require 'rapuncel/xml_rpc/deserializer'
@@ -11,8 +15,12 @@ module Rapuncel
     autoload :Logging, 'rapuncel/client/logging'
     
     attr_accessor :connection, :raise_on_fault, :raise_on_error
-
-    include Adapters::CurbAdapter
+    
+    if defined?(Adapters::CurbAdapter)
+      include Adapters::CurbAdapter
+    else
+      include Adapters::NetHttpAdapter
+    end
 
     def initialize configuration = {}
       @connection = Connection.new configuration.except(:raise_on, :serialization)

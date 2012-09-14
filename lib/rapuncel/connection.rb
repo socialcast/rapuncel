@@ -1,6 +1,6 @@
 module Rapuncel
   class Connection
-    attr_accessor :host, :port, :path, :ssl, :user, :password
+    attr_accessor :host, :port, :path, :ssl, :user, :password, :cookie_file_path
     alias_method :ssl?, :ssl
 
     def initialize configuration = {}
@@ -59,6 +59,7 @@ module Rapuncel
       self.headers  = configuration[:headers] || {}
       self.user     = configuration[:user]
       self.password = configuration[:password]
+      self.cookie_file_path = configuration[:cookie_file_path]
     end
   end
 end
