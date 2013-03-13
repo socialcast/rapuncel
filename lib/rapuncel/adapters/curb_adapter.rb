@@ -26,6 +26,7 @@ module Rapuncel
       def send_method_call str
         @curb ||= Curl::Easy.new "#{connection.protocol}://#{connection.host}:#{connection.port}#{connection.path}"
 
+        @curb.ssl_version = connection.ssl_version
         if connection.auth?
           @curb.username = connection.user
           @curb.password = connection.password
